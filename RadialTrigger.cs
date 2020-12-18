@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RadialTrigger : MonoBehaviour
 {
@@ -14,19 +12,26 @@ public class RadialTrigger : MonoBehaviour
         Vector3 origin = transform.position;
         Vector3 enemy = obj.position;
 
-        Vector3 distance = enemy - origin;
+        float length = MyDistance(origin, enemy);
 
-        float length = distance.x * distance.x + distance.y * distance.y;
-        //length = Mathf.Sqrt(length);
+        bool inInside = length < radius * radius;
 
-        //Squaring on both side will element the square root for length
-        //This is one of the optimization technique
-
-        bool inInside = length < radius*radius;
-
-        Gizmos.color=inInside ?  Color.green : Color.red;
-
+        Gizmos.color = inInside ? Color.green : Color.red;
         Gizmos.DrawWireSphere(origin, radius);
+    }
 
+    /// <summary>
+    /// Using Distance formula
+    /// (a,b)= Square root of a*a+b*b
+    /// </summary>
+    /// <param name="a"> from </param>
+    /// <param name="b"> to </param>
+    /// <returns> float value </returns>
+    float MyDistance(Vector2 a, Vector2 b)
+    {
+        Vector3 distance = a - b;
+        float length = distance.x * distance.x + distance.y * distance.y;
+        length = (float)System.Math.Sqrt(length);
+        return length;
     }
 }
