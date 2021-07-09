@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 
 public class RadialTrigger : MonoBehaviour
-{
+{   
+    [HideInInspector]
+    public Transform obj;
     [Range(0, 5)]
     public float radius = 1;
-
-    public Transform obj;
+    public double distance;
+    public float totalRadius;
 
     private void OnDrawGizmos()
     {
         Vector3 origin = transform.position;
         Vector3 enemy = obj.position;
 
-        float length = MyDistance(origin, enemy);
+        double length = MyDistance(origin, enemy);
+        distance = length;
 
-        bool inInside = length < radius * radius;
+        //Instead of square root of length, it is better to multiply the radius twice
+        //This is similar to squaring on both sides
+        totalRadius = radius *radius ;
+        bool inInside = length < totalRadius;
 
         Gizmos.color = inInside ? Color.green : Color.red;
         Gizmos.DrawWireSphere(origin, radius);
@@ -27,11 +33,10 @@ public class RadialTrigger : MonoBehaviour
     /// <param name="a"> from </param>
     /// <param name="b"> to </param>
     /// <returns> float value </returns>
-    float MyDistance(Vector2 a, Vector2 b)
+    double MyDistance(Vector2 a, Vector2 b)
     {
         Vector3 distance = a - b;
-        float length = distance.x * distance.x + distance.y * distance.y;
-        length = (float)System.Math.Sqrt(length);
+        double length = distance.x * distance.x + distance.y * distance.y;
         return length;
     }
 }
